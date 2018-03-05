@@ -8,3 +8,16 @@ Then build the container with
 ```
 docker build -t awx_haproxy .
 ```
+
+Finally you can restart your AWX application after modifying the included docker-compose.yml file for your environment with
+```
+docker-compose down
+docker-compose up
+```
+
+To update the AWX application while maintaining the haproxy integration, you can issue the following commands
+```
+docker-compose down
+docker-compose pull --ignore-pull-failures
+docker-compose up
+```

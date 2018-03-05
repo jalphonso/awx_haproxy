@@ -2,7 +2,7 @@ version: '2'
 services:
 
   lb:
-    image: jalphonso/awx_haproxy:latest
+    image: awx_haproxy:latest
     depends_on:
       - web
     ports:
