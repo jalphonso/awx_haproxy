@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
 
   lb:
@@ -15,9 +15,12 @@ services:
   web:
     image: ansible/awx_web:latest
     depends_on:
-      - rabbitmq
-      - memcached
-      - postgres
+      rabbitmq:
+        condition: service_started
+      memcached:
+        condition: service_started
+      postgres:
+        condition: service_healthy
     hostname: awxweb
     user: root
     restart: unless-stopped
@@ -84,6 +87,11 @@ services:
   postgres:
     image: postgres:9.6
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
       - /tmp/pgdocker:/var/lib/postgresql/data:Z
     environment:
